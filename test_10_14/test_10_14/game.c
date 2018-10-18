@@ -42,6 +42,7 @@ void ComputerMove(char board[ROW][COL], int row, int col)
 {
 	int x = 0;
 	int y = 0;
+	printf("电脑走:>\n");
 	while (1)
 	{
 		x = rand() % row;
@@ -57,12 +58,12 @@ void PlayerMove(char board[ROW][COL], int row, int col)
 {
 	int x = 0;
 	int y = 0;
-	printf("玩家走:>");
+	printf("玩家走:>\n");
 	while (1)
 	{
 		printf("请输入坐标:>");
 		scanf("%d%d", &x, &y);
-		if (x >= 1 && x <= row && y >= 1 && y <= col)
+		if (x >= 1 && x <= 3 && y >= 1 && y <= 3)
 		{
 			if (board[x - 1][y - 1] == ' ')
 			{
@@ -97,7 +98,7 @@ char IsWin(char board[ROW][COL], int row, int col)
 	}
 	if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != ' ')
 	{
-		return board[1][1];
+		return board[0][i];
 
 	}
 	if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[1][1] != ' ')

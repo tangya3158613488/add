@@ -10,12 +10,15 @@ void menu()
 void game()
 {
 	char board[ROW][COL] = { 0 };
-	InitBoard(board, ROW, COL);
-	DisplayBoard(board, ROW, COL);
+	InitBoard(board, ROW, COL);//≥ı ºªØ∆Â≈Ã
+	DisplayBoard(board, ROW, COL);//¥Ú”°∆Â≈Ã
 	int ret = 0;
 	while (1)
 	{
 		ComputerMove(board, ROW, COL);
+		ret = IsWin(board, ROW, COL);
+		if (ret != ' ')
+			break;
 		ret = IsWin(board, ROW, COL);
 		if (ret != ' ')
 			break;
