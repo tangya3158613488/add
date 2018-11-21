@@ -3,6 +3,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<assert.h>
+#include<stdlib.h>
+#include<errno.h>
 enum Option
 {
 	EXIT,
@@ -19,6 +21,8 @@ enum Option
 #define SEX_MAX 5
 #define TELE_MAX 12
 #define ADDR_MAX 30
+#define AEFAULT_SZ 3
+#define INC_SZ 2
 typedef struct PeoInfo
 {
 	char name[MAX_NAME];
@@ -29,12 +33,18 @@ typedef struct PeoInfo
 }PeoInfo;
 typedef struct Contact
 {
-	PeoInfo data[MAX];//存放数据
+	//PeoInfo data[MAX];//存放数据
+	PeoInfo* data;
 	int sz;//通讯录的有效信息个数
+	int capacity;//存放通讯录的当前最大总量
 }Contact;
 
 void InitContact(Contact* pcon);
+void destroyContact(Contact* pcon);
 void AddContact(Contact* pcon);
 void ShowContact(const Contact* pcon);
 void DelContact(Contact* pcon);
+int CheckCapacity(Contact* pcon);
+void SaveContact(Contact* pcon);
+void LoaContact(Contact* pcon);
 #endif //__CONTACT_H__

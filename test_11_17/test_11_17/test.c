@@ -40,6 +40,7 @@ void test()
 		case EMPTY:
 			break;
 		case EXIT:
+			DestoryContact(&con); 
 			printf("�˳�ͨѶ¼\n");
 			break;
 		default:

@@ -6,16 +6,87 @@ void InitContact(Contact* pcon)
 	pcon->sz = 0;
 	memset(pcon->data, 0, sizeof(pcon->data));
 }
+void destroyContact(Contact* pcon)
+{
+
+	assert(pcon != NULL);
+	//保存数据到文件
+	SaveContact(pcon);
+	free(pcon->data);
+	pcon->data = NULL;
+	pcon->sz = 0;
+	pcon->capacity = 0;
+} 
+void LoaContact(Contact* pcon)
+{
+	FILE* pf = fopen("contact.dat", "rb");
+	PeoInfo tmp = { 0 };
+	int i = 0;
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return;
+	}
+	//读数据
+	while (fread(&tmp, sizeof(PeoInfo), 1, pf))
+	{
+		CheckCapacity(pcon);
+		pcon->data[pcon->sz++] = tmp;
+	}
+	fclose(pf);
+	pf = NULL;
+
+}
+void SaveContact(Contact* pcon)
+{
+	FILE* pf = fopen("contact.dat", "wb");
+	int i = 0;
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return;
+	}
+	//写数据
+	for (i = 0; i < pcon->sz; i++)
+	{
+		fwrite(pcon->data + i, sizeof(PeoInfo), 1, pf);
+	}
+	fclose(pf);
+	pf = NULL;
+}
+
+int CheckCapacity(Contact* pcon)
+{
+
+	assert(pcon != NULL);
+	if (pcon->capacity == pcon->sz)
+	{
+		//增容
+		PeoInfo *ptr = realloc(pcon->data, (pcon->capacity + INC_SZ)*sizeof(PeoInfo));
+		if (ptr != NULL)
+		{
+			pcon->data = ptr;
+			pcon->capacity += INC_SZ;
+			printf("增容成功\n");
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
 void AddContact(Contact* pcon)
 {
 	assert(pcon != NULL);
-
-	if (pcon->sz == MAX)
+	//增加容量的函数
+	if (CheckCapacity(pcon) == 0)
 	{
-		printf("通讯录已满，无法添加\n");
+		printf("通讯录已满，尝试增容，失败！无法添加\n");
+		return;
 	}
-	else
-	{
 		printf("请输入名字:>");
 		scanf("%s", pcon->data[pcon->sz].name);
 		printf("请输入年龄:>");
@@ -28,8 +99,6 @@ void AddContact(Contact* pcon)
 		scanf("%s", &(pcon->data[pcon->sz].addr));
 		pcon->sz++;
 		printf("添加成功\n");
-	}
-
 }
 void ShowContact(const Contact* pcon)
 {
