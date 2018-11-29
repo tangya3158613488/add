@@ -10,9 +10,9 @@ void Test1()
 	SeqListPushBack(&s, 3);
 	SeqListPushBack(&s, 56);
 	SeqListPushBack(&s, 1);
-	SeqListPushBack(&s, 35);
+	SeqListPushBack(&s, 3);
 	SeqListPushBack(&s, 30);
-	SeqListPushBack(&s, 25);
+	SeqListPushBack(&s, 3);
     SeqListPopBack(&s);
 	SeqListInsert(&s, 2, 5);
 	SeqListPopFront(&s);
@@ -22,6 +22,8 @@ void Test1()
 	SeqListModify(&s, 1,3);
 	SeqListBubbleSort(&s);
 	SeqListBinaryFind(&s, 56);
+
+	SeqListRemoveAll(&s, 3);
 
 	SeqListPrint(&s);
 	SeqListDestory(&s);

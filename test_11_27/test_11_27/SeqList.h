@@ -24,7 +24,7 @@ int SeqListEmpty(SeqList* ps);//检查是否为空
 void SeqListModify(SeqList* ps,size_t pos,SLDataType x);//修改给定位置的值
 void SeqListBubbleSort(SeqList* ps);//对顺序表进行冒泡排序
 int SeqListBinaryFind(SeqList* ps, SLDataType x);
-
+void SeqListRemoveAll(SeqList* ps, SLDataType x);
 
 
 void SeqListDestory(SeqList* ps);

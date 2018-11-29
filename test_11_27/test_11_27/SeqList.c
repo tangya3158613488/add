@@ -174,24 +174,27 @@ int SeqListBinaryFind(SeqList* ps, SLDataType x)
 			return mid;
 			printf("ур╣╫ак%d\n", mid);
 		}
+		return -1;
 	}
-	return -1;
 }
+	void SeqListRemoveAll(SeqList* ps, SLDataType x)
+	{
+		assert(ps);
+		size_t cur = 0;
+		size_t dest = 0;
+		while (cur < ps->_size)
+		{
+			if (ps->_array[cur] == x)
+			{
+				++cur;
+			}
+			else
+			{
+				ps->_array[dest] = ps->_array[cur];
+				++dest;
+			}
+			++cur;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		}
+		ps->_size=dest;
+	}
