@@ -27,5 +27,6 @@ void SListPopBack(SList* plist);//尾删
 SListNode* SListFind(SList* plist, SLTDataType x);//找给定数字的位置
 void SListInsertAfter(SListNode* pos, SLTDataType x);//在某个位置插入一个值
 void SListDestory(SList* plist);//释放链表
+void SListEraseAfter(SListNode* pos);
 void Test1();
 #endif //__TEST_H__

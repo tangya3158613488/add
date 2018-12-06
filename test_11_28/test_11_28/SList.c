@@ -107,6 +107,17 @@ void SListPrint(SList* plist)
 	printf("NULL\n");
 }
 
+void SListEraseAfter(SListNode* pos)
+{
+	assert(pos && pos->_next);
+	SListNode* next = pos->_next;
+	SListNode* nextnext = next->_next;
+	pos->_next = nextnext;
+	free(next);
+}
+
+
+
 void SListDestory(SList* plist)
 {
 	assert(plist);
@@ -129,10 +140,16 @@ void Test1()
 	SListPushBack(&list, 2);
 	SListPushBack(&list, 1);
 	SListPrint(&list);
+	SListPushFront(&list, 5);
+	SListPrint(&list);
 	SListPopFront(&list);
+	SListPrint(&list);
 	SListPopBack(&list);
+	SListPrint(&list);
 	SListNode* pos = SListFind(&list, 3);
 	SListInsertAfter(pos, 30);
+	SListPrint(&list);
+	SListEraseAfter(pos);
 	SListPrint(&list);
 	SListDestory(&list);
 
