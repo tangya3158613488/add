@@ -13,16 +13,31 @@ void Test1()
 	SeqListPushBack(&s, 3);
 	SeqListPushBack(&s, 30);
 	SeqListPushBack(&s, 3);
+	SeqListPrint(&s);
+
     SeqListPopBack(&s);
+	SeqListPrint(&s);
+
 	SeqListInsert(&s, 2, 5);
+	SeqListPrint(&s);
+
 	SeqListPopFront(&s);
+	SeqListPrint(&s);
+
 	SeqListErase(&s, 2);
+	SeqListPrint(&s);
+
 	SeqListSize(&s);
+	SeqListPrint(&s);
+
 	SeqListEmpty(&s);
 	SeqListModify(&s, 1,3);
-	SeqListBubbleSort(&s);
-	SeqListBinaryFind(&s, 56);
+	SeqListPrint(&s);
 
+	SeqListBubbleSort(&s);
+	SeqListPrint(&s);
+
+	SeqListBinaryFind(&s, 56);
 	SeqListRemoveAll(&s, 3);
 
 	SeqListPrint(&s);
