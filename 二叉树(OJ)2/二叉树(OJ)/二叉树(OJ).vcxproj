@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1265EFB6-9B3E-4516-8DE0-E93E0B1A16F3}</ProjectGuid>
-    <RootNamespace>二叉树（）</RootNamespace>
+    <ProjectGuid>{9461AE6B-2C0C-41C8-AE0C-DCD55A06B182}</ProjectGuid>
+    <RootNamespace>二叉树OJ</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
