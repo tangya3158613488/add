@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"BinaryTree.h"
+#include"Queue.h"
 BTNode* BinaryTreeCreate(BTDataType* a, int *pindex)
 {
 	assert(a);
@@ -102,4 +103,53 @@ void BinaryTreePostorder(BTNode* root)
 	BinaryTreePostorder(root->_left);
 	BinaryTreePostorder(root->_right);
 	printf("%c ", root->_data);
+}
+void BinaryTreeLevelOrder(BTNode* root)
+{
+	Queue q;
+	QueueInit(&q);
+	if (root)
+		QueuePush(&q, root);
+	while (QueueEmpty(&q) != 0)
+	{
+		BTNode* front = QueueFront(&q);
+		printf("%c ", front->_data);
+		if (front->_left != NULL)
+		{
+			QueuePush(&q,front->_left);
+		}
+		if (front->_right != NULL)
+		{
+			QueuePush(&q, front->_right);
+		}
+	}
+}
+void BinaryTreeComplete(BTNode* root)
+{
+	Queue q;
+	QueueInit(&q);
+	if (root)
+		QueuePush(&q, root);
+	while (QueueEmpty(&q) != 0)
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+		if (front == NULL)
+		{
+			break;
+		}
+		QueuePush(&q, front->_left);
+		QueuePush(&q, front->_right);
+	}
+	while (QueueEmpty(&q) != 0)
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+		if (front != 0)
+		{
+			QueueDestroy(&q);
+			return 0;
+		}
+	}
+	return 1;
 }

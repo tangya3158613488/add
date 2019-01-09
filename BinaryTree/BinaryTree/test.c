@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"BinaryTree.h"
+#include"Queue.h"
 int main()
 {
 	char a[] = "ABD##E#H##CF##G##";
@@ -10,6 +11,8 @@ int main()
 	BinaryTreeInorder(tree);
 	printf("\n");
 	BinaryTreePostorder(tree);
+	printf("\n");
+	BinaryTreeLevelOrder(tree);
 	printf("\n");
 	printf("%d\n", BinaryTreeSize(tree));
 	printf("%d\n", BinaryTreeLeafSize(tree));
