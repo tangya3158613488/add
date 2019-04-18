@@ -4,6 +4,7 @@
 #include<iostream>
 using std::cout;
 using std::endl;
+
 template<class T>
 struct BSTNode
 {
@@ -17,6 +18,8 @@ struct BSTNode
 	BSTNode<T>* _right;
 	T _key;
 };
+
+
 template<class T>
 class BSTree
 {
@@ -40,12 +43,13 @@ public:
 		if (root == nullptr)
 			return nullptr;
 		Node* tmp = new Node;
+		tmp->_key = root->_key;
 		tmp->_left = Copy(root->_left);
 
 		tmp->_right = Copy(root->_right);
 		return tmp;
 	}
-	BSTree<T>& operator=(const BSTree<T>& tree)
+	BSTree& operator=(const BSTree& tree)
 	{
 		if (this != &tree)
 		{
@@ -247,7 +251,7 @@ private:
 private:
 	Node* _root;
 };
-void Test()
+void TestBSTree()
 {
 	BSTree<int> BST1;
 	BST1.Insert(5);
@@ -265,12 +269,12 @@ void Test()
 	BST1.Find(10);
 	BST1.Erase(7);
 	BST1.Inorder();
-	/*BSTree<int> BST2(BST1);
-	BST2.Insert(5);
-	BST2.Insert(6);
-	BST2.Insert(3);
-	BST2.Inorder();
-	BSTree<int>BST3 = BST2;
 	cout << endl;
-	BST3.Inorder();*/
+	BSTree<int> copy(BST1);
+	BSTree<int> BST2;
+	BST2 = BST1;
+	copy.Inorder();
+	cout << endl;
+	BST2.Inorder();
 }
+

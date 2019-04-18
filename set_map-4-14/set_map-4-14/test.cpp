@@ -127,6 +127,6 @@ int main()
 	//TestMap2();
 	//TestMap3();
 	//TestMap4();
-	Test();
+	 TestBSTree();
 	return 0;
 }
