@@ -50,6 +50,7 @@ public:
 	~AVLTree()
 	{
 		Destroy(_root);
+		_root = nullptr;
 	}
 
 	bool Insert(const K& key,const V& value)
@@ -138,48 +139,11 @@ public:
 				}
 				else if (parent->_bf == -2 && cur->_bf == 1)//×óÓÒË«Ðý
 				{
-					Node* subL = parent->_left;
-					Node* subLR = subL->_right;
-					int bf = subLR->_bf;
-					RotateL(parent->_left);
-					RotateR(parent);
-					if (bf == -1)
-					{
-						parent->_bf = 1;
-						subL->_bf = 0;
-					}
-					else if (bf == 1)
-					{
-						parent->_bf = 0;
-						subL->_bf = -1;
-					}
-					else
-					{
-						parent->_bf = subL->_bf = 0;
-					}
-
+					RotateLR(parent);
 				}
 				else if (parent->_bf == 2 && cur->_bf == -1)//ÓÒ×óË«Ðý
 				{
-					Node* subR = parent->_right;
-					Node* subRL = subR->_left;
-					int bf = subRL->_bf;
-					RotateR(parent->_right);
-					RotateL(parent);
-					if (bf == -1)
-					{
-						parent->_bf = 0;
-						subR->_bf = 1;
-					}
-					else if (bf == 1)
-					{
-						parent->_bf = -1;
-						subR->_bf = 0;
-					}
-					else
-					{
-						parent->_bf = subR->_bf = 0;
-					}
+					RotateRL(parent);
 				}
 				break;
 			}
@@ -189,6 +153,54 @@ public:
 			}
 		}
 		return true;
+	}
+	void RotateLR(Node* parent)
+	{
+		Node* subL = parent->_left;
+		Node* subLR = subL->_right;
+		int bf = subLR->_bf;
+
+		RotateL(parent->_left);
+		RotateR(parent);
+		if (bf == -1)
+		{
+			parent->_bf = 1;
+			subL->_bf = 0;
+		}
+		else if (bf == 1)
+		{
+			parent->_bf = 0;
+			subL->_bf = -1;
+		}
+		else
+		{
+			parent->_bf = subL->_bf = 0;
+		}
+		subLR->_bf = 0;
+	}
+	void RotateRL(Node* parent)
+	{
+		Node* subR = parent->_right;
+		Node* subRL = subR->_left;
+		int bf = subRL->_bf;
+
+		RotateR(parent->_right);
+		RotateL(parent);
+		if (bf == -1)
+		{
+			parent->_bf = 0;
+			subR->_bf = 1;
+		}
+		else if (bf == 1)
+		{
+			parent->_bf = -1;
+			subR->_bf = 0;
+		}
+		else
+		{
+			parent->_bf = subR->_bf = 0;
+		}
+		subRL->_bf = 0;
 	}
 	void RotateL(Node* parent)
 	{
@@ -202,10 +214,9 @@ public:
 		subR->_left = parent;
 		Node* pparent = parent->_parent;
 		parent->_parent = subR;
-		if (pparent == nullptr)
+		if (parent == _root)
 		{
 			_root = subR;
-			subR->_parent = nullptr;
 		}
 		else
 		{
@@ -235,10 +246,9 @@ public:
 		subL->_right = parent;
 		Node* pparent = parent->_parent;
 		parent->_parent = subL;
-		if (pparent == nullptr)
+		if (parent == _root)
 		{
 			_root = subL;
-			subL->_parent = nullptr;
 		}
 		else
 		{
@@ -261,23 +271,22 @@ public:
 		cout << endl;
 	}
 private:
-	void Destroy(Node*& root)
+	void Destroy(Node* root)
 	{
 		if (root)
 		{
 			Destroy(root->_left);
 			Destroy(root->_right);
-			root = nullptr;
+			delete root;
 		}
 	}
 	void _Inorder(Node* root)
 	{
-		if (root)
-		{
-			_Inorder(root->_left);
-			cout << root->_key <<" ";
-			_Inorder(root->_right);
-		}
+		if (root == nullptr)
+			return;
+		_Inorder(root->_left);
+		cout << root->_key << " ";
+		_Inorder(root->_right);
 	}
 	int Height(Node* root)
 	{
@@ -313,7 +322,7 @@ private:
 void TestAVLTree()
 {
 	AVLTree<int,int> tree;
-	int arr[] = {16,3,7,11,9,26,18,14,15};
+	int arr[] = { 16, 3, 7, 11, 9 };
 	for (auto& e : arr)
 	{
 		tree.Insert(e,e);
