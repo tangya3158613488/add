@@ -96,7 +96,7 @@ public:
 		cur->_parent = parent;
 
 		//插入新结点后，AVL树的平衡性可能遭到破坏，此时需要更新平衡因子，并检查是否破坏了AVL树的平衡性
-		/*1.调节平衡因子
+		/*调节平衡因子
 		1)如果cur插入到parent的左侧，给parent的平衡因子-1；
 		2)如果cur插入到parent的右侧，给parent的平衡因子+1
 		此时parent的平衡因子可能是：0、正负1、正负2
@@ -270,6 +270,35 @@ public:
 		_Inorder(_root);
 		cout << endl;
 	}
+	void Height()
+	{
+		cout << _Height(_root) << endl;
+	}
+	bool IsBalanceTree()
+	{
+		return _IsBalanceTree(_root);
+	}
+	int _Height(Node* root)
+	{
+		if (root == nullptr)
+			return 0;
+		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+		return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
+	}
+	bool _IsBalanceTree(Node* root)
+	{
+		if (_root == nullptr)
+			return true;
+ 		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+		if (abs(leftHeight - rightHeight) > 2 || (leftHeight - rightHeight) != root->_bf)
+		{
+			cout << " 平衡因子错误" << endl;
+			return false;
+		}
+		return  _IsBalanceTree(root->_left) && _IsBalanceTree(root->_right);
+	}
 private:
 	void Destroy(Node* root)
 	{
@@ -288,44 +317,18 @@ private:
 		cout << root->_key << " ";
 		_Inorder(root->_right);
 	}
-	int Height(Node* root)
-	{
-		if (root == nullptr)
-			return 0;
-		int leftHeight = Height(root->_left);
-		int rightHeight = Height(root->_right);
-		return (leftHeight > rightHeight) ? (leftHeight + 1) : (rightHeight + 1);
-	}
-	bool IsBalanceTree(Node* root)
-	{
-		if (_root == nullptr)
-			return true;
-		int leftHeight = Height(root->_left);
-		int rightHeight = Height(root->_right);
-		int diff = rightHeight - leftHeight;
-		if (diff != root->_bf)
-		{
-			cout << "结点平衡因子错误" << endl;
-			return false;
-		}
-		if (diff > 1 || diff < -1)
-		{
-			return false;
-		}
-		else
-		{
-			return IsBalanceTree(root->_left) && IsBalanceTree(root->_right);
-		}
-	}
+	
 	Node* _root;
 };
 void TestAVLTree()
 {
 	AVLTree<int,int> tree;
-	int arr[] = { 16, 3, 7, 11, 9 };
+	int arr[] = { 26, 18, 14, 5, 3 };
 	for (auto& e : arr)
 	{
 		tree.Insert(e,e);
 	}
 	tree.Inorder();
+	tree.Height();
+	tree.IsBalanceTree();
 }
