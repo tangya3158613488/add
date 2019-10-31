@@ -59,8 +59,6 @@ insert into SC(Sno,Cno,Cgrade)values
 2.	select SNAME,avg(SCGRADE) from SC,S group by SNO having avg(SCRADE)<60 and having count(*)>=2;
 3.	select SNAME from S,SC where S.SNO=SC.SNO and SC.CNO='1' and SC>CNO='2';
 
-
-
 练习一：
 1.select Sno,Sname
   from Student
@@ -99,10 +97,10 @@ insert into SC(Sno,Cno,Cgrade)values
   1.
   练习三：
   图书管理系统
-1.create table CARD(
-CNO char(3) primary key not null comment'卡号',
-NAME varchar(10) not null comment'姓名',
-CLASS varchar(20) not null comment'班级'
+1.create table card(
+Cno char(3) primary key not null comment'卡号',
+Name varchar(10) not null comment'姓名',
+Class varchar(20) not null comment'班级'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 create table books(
 Bno char(3)primary key not null comment'书号',
@@ -114,7 +112,10 @@ Quantity int unsigned not null comment'库存册数'
 create table borrow(
 Cno char(3) not null comment'借书卡号',
 Bno char(3) not null comment'书号',
-Rdate datetime not null comment'还书日期'
+Rdate datetime not null comment'还书日期',
+foreign key(Bno) references books(Bno),
+foreign key(Cno) references card(Cno),
+primary key(Cno,Bno),
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 insert into card(Cno,name,class)values
@@ -150,10 +151,27 @@ insert into borrow(Cno,Bno,Rdate)values
 	where Bno in
 	(select Bno from books
 	where Name='水浒'));
-  4.
+  4.//select * from borrow where Rdate < now();
   5.select Bno,Name,Author
     from books
 	where Name like'%网络' or Name like'网络%';
-  6.select max(Price),Name,Author
-    from books;
-
+  6.select Name,Author
+    from books where Price in (select max(Price) from books);
+  7.select a.Cno from borrow a,books b where a.Bno = b.Bno
+  and b.Name = '计算方法' and not exists (select * from borrow aa,books bb 
+  where aa.Bno = bb.Bno and bb.Name = '计算机方法习题集' and aa.Cno = a.Cno)
+  order by a.Cno desc;
+  8.update borrow set Rdate = dateadd(day,7,borrow.Rdate)
+  from card,borrow where card.Cno = borrow.Cno and card.Class = 'C01';
+  9.delete from books where not exists(select * from borrow where Bno = books.Bno);
+  10.create index idx_books_bname on books(Name);
+  11.//create trigger tr_save on borrow for insert,update as 
+  12.create view v_view as select card.Name,books.Name 
+	from borrow,card,books
+	where books.Cno = card.Cno and books.Bno = borrow.Bno and Class = '0801班';
+  13.select borrow.Cno from books,borrow where books.Bno = borrow.Bno 
+	and books.Name in('计算方法','组合数学') group by borrow.CnO
+	having count(*) = 2 order by borrow.Cno desc;
+  14.alter table books add primary key(Bno);
+  15.1 alter table card alter column Name varchar(10);
+  15.2 alter table card add department varchar(20);
