@@ -9,7 +9,7 @@ positionaltitles char(2) comment '职称'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 2.工资标准表
 create table wagestandards(
-positionaltitles char(2) comment '职称',
+positionaltitles char(2) primary key comment '职称',
 wagestandards int comment '工资标准'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 4.考勤表
@@ -38,8 +38,10 @@ create table dolar as
 select id,wagestandards.positionaltitles,wagestandards as wage 
 from employee,wagestandards
 where employee.positionaltitles = wagestandards.positionaltitles;
-
-
+添加主键：
+alter table dolar add primary key (id);
+添加外键:
+alter table dolar add constraint fk foreign key (positionaltitles) references wagestandards(positionaltitles);
 4.update dolar set wage = wage*1.5 
   where id in( select id from employee
   where year(curdate())-year(borndate)>30);
@@ -55,17 +57,15 @@ where employee.positionaltitles = wagestandards.positionaltitles;
   (select max(year(curdate())-year(borndate)) 
   from employee where positionaltitles = '中级');
   
-//7.update dolar set
- wage = (select wage from attendance ,dolar 
- where wage=wage+overworkdays*wage*0.03-sickdays*wage*0.01-leavedays*wage*0.02);
+7.update dolar,attendance set
+ wage = wage+overworkdays*wage*0.03-sickdays*wage*0.01-leavedays*wage*0.02
+ where dolar.id = attendance.id;
  
- //8.select *from employee
- where year(curdate())-year(borndate) > 
- (select min(year(curdate())-year(borndate)) from employee
- where positionaltitles = '后勤部')
- and positionaltitles <> '后勤部';
- 9.
- 10.delete from dolar,employee
- where id in (select dolar.id ,employee.id from dolar,employee 
- where positionaltitles = '后勤部' );
+ //8.select *from employee x
+ where x.positionaltitles <> '后勤部' and x.borndate < (select min(borndate)
+ from employee where positionaltitles = '后勤部');
+ and 
+ 9.select name,wage from dolar,employee where dolar.id = employee.id and department in
+ (select department from employee where name = '张骞');
+ 10.delete from employee where positionaltitles = '后勤部' cascade;
  
