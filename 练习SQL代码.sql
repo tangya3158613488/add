@@ -40,24 +40,12 @@ insert into SC(Sno,Cno,Cgrade)values
 (003,'10',87),(004,'C5',77),(005,'C3',69),(006,10,84);
 
 查询：
-练习一：
-1.	select Sno,Sname from Student 
-    
-2.	select S#,SD from S where S# IN (
-	select S# from SC where C#='C2')；
-3.	select S#,SN from S where S# IN (
-	select S# from SC where C#<>'C5');
-4.	select S#,SD from S where not exists (
-	select * from C where not exists (
-	select * from SC where S#=S.S# and C#=C.C#));
-5.	select count(distinct S#) from SC;
-6.	select S#,SD from S group by S# having count(*)>5;
-练习二：
-1.	select SNAME from S where not exist (
-	select * from where not exists (
-	select * from SC where SNO=SC.CNO and CTEACHER='李明'));
-2.	select SNAME,avg(SCGRADE) from SC,S group by SNO having avg(SCRADE)<60 and having count(*)>=2;
-3.	select SNAME from S,SC where S.SNO=SC.SNO and SC.CNO='1' and SC>CNO='2';
+1.	查询选修课程名称为’税收基础’的学员学号和姓名（使用标准SQL嵌套语句）
+2.	查询选修课程编号为’C2’的学员姓名和所属单位
+3.	查询没有选修课程编号为’C5’的学员姓名和所属单位
+4.	查询选修全部课程的学员姓名和所属单位（？？）
+5.	查询选修了课程的学员人数
+6.	查询选修课程超过5门的学员学号和所属单位
 
 练习一：
 1.select Sno,Sname
@@ -94,7 +82,36 @@ insert into SC(Sno,Cno,Cgrade)values
   having count(SC.Sno)>5);
   
   练习二：
-  1.
+  create table S(
+  Sno int primary key not null comment '学号',
+  Sname varchar(10) not null comment '姓名'
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  
+  create table C(
+  Cno int primary key not null comment '课程号',
+  Cname varchar(10) not null comment '课程名',
+  Cteacher varchar(10) not null comment '任课教师'
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  
+  create table SC(
+  Sno int primary key not null comment '学号',
+  Cno int not null comment '课程号',
+  SCgrade int comment '成绩',
+  foreign key (Cno) references C(Cno)
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  insert into S(Sno,Sname) values
+  (001,'张三'),
+1．找出没有选修过“李明”老师讲授课程的所有学生姓名
+2．	列出有二门以上（含两门）不及格课程的学生姓名及其平均成绩
+3．	列出既学过“1”号课程，又学过“2”号课程的所有学生姓名
+4．	列出比“Stu2”号同学的“Class1”号课成绩高的所有学生的学号、姓名
+
+ 1.	select SNAME from S where not exist (
+	select * from where not exists (
+	select * from SC where SNO=SC.CNO and CTEACHER='李明'));
+2.	select SNAME,avg(SCGRADE) from SC,S group by SNO having avg(SCRADE)<60 and having count(*)>=2;
+3.	select SNAME from S,SC where S.SNO=SC.SNO and SC.CNO='1' and SC>CNO='2';
+4.  select 
   练习三：
   图书管理系统
 1.create table card(
