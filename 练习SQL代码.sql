@@ -99,19 +99,28 @@ insert into SC(Sno,Cno,Cgrade)values
   SCgrade int comment '成绩',
   foreign key (Cno) references C(Cno)
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  
   insert into S(Sno,Sname) values
-  (001,'张三'),
+  (1,'张三'),(2,'李四'),(3,'王五'),(4,'赵六'),(5,'田七');
+  insert into C(Cno,Cname,Cteacher) values
+  (1,'数学','李明'),(2,'语文','王欣'),(3,'数据库管理系统','赵亮'),(4,'C语言程序设计','孙武'),
+  (5,'网络原理','刘佳');
+
+  insert into SC(Sno,Cno,SCgrade)values
+  (1,1,50),(2,2,80),(3,2,89),(4,3,95),(5,3,88),
+  (1,4,56),(1,5,59),(3,3,79),(4,4,69),(2,1,80);
 1．找出没有选修过“李明”老师讲授课程的所有学生姓名
 2．	列出有二门以上（含两门）不及格课程的学生姓名及其平均成绩
 3．	列出既学过“1”号课程，又学过“2”号课程的所有学生姓名
 4．	列出比“Stu2”号同学的“Class1”号课成绩高的所有学生的学号、姓名
 
- 1.	select SNAME from S where not exist (
+ 1.	select Sname from S where not exist (
 	select * from where not exists (
-	select * from SC where SNO=SC.CNO and CTEACHER='李明'));
-2.	select SNAME,avg(SCGRADE) from SC,S group by SNO having avg(SCRADE)<60 and having count(*)>=2;
-3.	select SNAME from S,SC where S.SNO=SC.SNO and SC.CNO='1' and SC>CNO='2';
-4.  select 
+	select * from S(C where Sno=SC.Cno and CTEACHER='李明'));
+2.	select Sname,avg(SCgrade) from SC,S group by Sno having avg(SCgrade)<60 and having count(*)>=2;
+3.	select Sname from S,SC where S.Sno=SC.Sno and SC.Cno='1' and SC>Cno = '2';
+4.  select Sno,Sname from S where Sno in(select Sno from SC where Sno<>2 and SCgrade >
+	(select SCgrade from SC where Sno = 2 and Cno = 1));
   练习三：
   图书管理系统
 1.create table card(
@@ -123,7 +132,7 @@ create table books(
 Bno char(3)primary key not null comment'书号',
 Name char(50) not null comment'书名',
 Author varchar(30) not null comment'作者',
-Price int not null comment'价格',
+Price int unsigned not null comment'价格',
 Quantity int unsigned not null comment'库存册数'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 create table borrow(
