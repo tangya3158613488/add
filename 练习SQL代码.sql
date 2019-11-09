@@ -94,7 +94,7 @@ insert into SC(Sno,Cno,Cgrade)values
   )ENGINE=InnoDB DEFAULT CHARSET=utf8;
   
   create table SC(
-  Sno int primary key not null comment '学号',
+  Sno int  not null comment '学号',
   Cno int not null comment '课程号',
   SCgrade int comment '成绩',
   foreign key (Cno) references C(Cno)
@@ -107,20 +107,22 @@ insert into SC(Sno,Cno,Cgrade)values
   (5,'网络原理','刘佳');
 
   insert into SC(Sno,Cno,SCgrade)values
-  (1,1,50),(2,2,80),(3,2,89),(4,3,95),(5,3,88),
+  (1,1,50),(2,2,80),(3,2,89),(4,3,95),(5,3,88),(2,1,87),
   (1,4,56),(1,5,59),(3,3,79),(4,4,69),(2,1,80);
 1．找出没有选修过“李明”老师讲授课程的所有学生姓名
 2．	列出有二门以上（含两门）不及格课程的学生姓名及其平均成绩
 3．	列出既学过“1”号课程，又学过“2”号课程的所有学生姓名
 4．	列出比“Stu2”号同学的“Class1”号课成绩高的所有学生的学号、姓名
 
- 1.	select Sname from S where not exist (
-	select * from where not exists (
-	select * from S(C where Sno=SC.Cno and CTEACHER='李明'));
-2.	select Sname,avg(SCgrade) from SC,S group by Sno having avg(SCgrade)<60 and having count(*)>=2;
-3.	select Sname from S,SC where S.Sno=SC.Sno and SC.Cno='1' and SC>Cno = '2';
+ 1.	select Sno,Sname from S where not exists (
+	select * from SC,C where S.Sno=SC.Sno and SC.Cno = C.Cno and CTEACHER='李明');
+2.	select Sname,avg(SCgrade) from SC,S,
+	(select Sno from SC where avg(SCgrade)<60 group by Sno having count(distinct Cno)>=2)A
+	where S.Sno = A.Sno and SC.Sno = A.Sno group by S.Sno,S.Sname;
+3.	select Sname from S,(select SC.Sno from SC,C where SC.Cno = C.Cno and
+	SC.Cno in(1,2)group by Sno having count(distinct SC.Cno)=2)B where S.Sno = B.Sno;
 4.  select Sno,Sname from S where Sno in(select Sno from SC where Sno<>2 and SCgrade >
-	(select SCgrade from SC where Sno = 2 and Cno = 1));
+	(select SCgrade from SC where Sno = 2 and Cno = 1 limit 1 ));
   练习三：
   图书管理系统
 1.create table card(
@@ -164,7 +166,7 @@ insert into borrow(Cno,Bno,Rdate)values
 (101,'B02','2019-4-19'),
 (101,'C03','2019-3-23'),
 (101,'C05','2019-4-20'),
-(101,'C04','2019-5-2');
+(104,'C04','2019-5-2');
 
   2.select Cno,count(Cno)
     from borrow
@@ -177,7 +179,7 @@ insert into borrow(Cno,Bno,Rdate)values
 	where Bno in
 	(select Bno from books
 	where Name='水浒'));
-  4.//select * from borrow where Rdate < now();
+  4.select * from borrow where Rdate < now();
   5.select Bno,Name,Author
     from books
 	where Name like'%网络' or Name like'网络%';
@@ -187,14 +189,14 @@ insert into borrow(Cno,Bno,Rdate)values
   and b.Name = '计算方法' and not exists (select * from borrow aa,books bb 
   where aa.Bno = bb.Bno and bb.Name = '计算机方法习题集' and aa.Cno = a.Cno)
   order by a.Cno desc;
-  8.update borrow set Rdate = dateadd(day,7,borrow.Rdate)
-  from card,borrow where card.Cno = borrow.Cno and card.Class = 'C01';
+  8.update b set Rdate = dateadd(day,7,b.Rdate)
+  from card a,borrow b where a.Cno = b.Cno and a.Class = 'C01';
   9.delete from books where not exists(select * from borrow where Bno = books.Bno);
-  10.create index idx_books_bname on books(Name);
+  10.create clustered index idx_books_bname on books(Name);
   11.//create trigger tr_save on borrow for insert,update as 
-  12.create view v_view as select card.Name,books.Name 
+  12.create view v_view as select books.Name,books.Author 
 	from borrow,card,books
-	where books.Cno = card.Cno and books.Bno = borrow.Bno and Class = '0801班';
+	where card.Cno = borrow.Cno and books.Bno = borrow.Bno and Class = '0801班';
   13.select borrow.Cno from books,borrow where books.Bno = borrow.Bno 
 	and books.Name in('计算方法','组合数学') group by borrow.CnO
 	having count(*) = 2 order by borrow.Cno desc;
