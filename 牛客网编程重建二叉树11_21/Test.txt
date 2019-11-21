@@ -1,0 +1,69 @@
+解题思路：
+1.先序遍历的第一个元素就是整颗二叉树的根节点。
+2.然后遍历中序遍历，找到与根节点相等的元素，其左边的元素放在inLeft中，左边的元素放在inRight中。
+3.从前序遍历的第二个元素开始遍历前序遍历，同时循环遍历inLeft,如果前序遍历的元素能在inLeft中找到，就将该元素放在preLeft中，否则就放在preRight中
+4.分别创建根节点的左右节点递归以上步骤。最后返回根节点。
+
+class Solution {
+public:
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        if(pre.size() == 0 || vin.size() == 0)
+            return nullptr;
+        //定义Node节点并其求根节点；
+        int root = pre[0];
+        TreeNode* node = new TreeNode(root);
+        vector<int>::iterator it;
+        //1.求左右子树的遍历序列；
+        vector<int> preLeft, preRight, inLeft, inRight;
+           //求根节点在中序遍历序列中的位置；
+        vector<int>::iterator i;
+        for(it = vin.begin(); it != vin.end(); it++)
+        {
+            if(root == *it)
+            {
+                i = it;
+            }
+        }
+            //求左右子树的中序遍历子序列；
+        int k = 0;
+        for(it = vin.begin(); it != vin.end(); it++)
+        {
+            if(k == 0) 
+            {
+                inLeft.push_back(*it);
+            }
+            else if(k == 1) 
+            {
+                inRight.push_back(*it);
+            }
+            if(it == i)
+            {
+                k = 1;
+            } 
+        }
+            //求左右子树的前序遍历子序列；
+        k = 0;
+        vector<int>::iterator ite;
+        for(it = pre.begin()+1; it != pre.end(); it++)
+        {
+            for(ite = inLeft.begin(); ite != inLeft.end(); ite++) 
+            {
+                if(*it == *ite) 
+                {
+                    preLeft.push_back(*it);
+                    k = 1;
+                }
+            }
+            if(k == 0)
+            {
+                preRight.push_back(*it);
+            }
+            k = 0;
+        }
+        //根据遍历序列求出根的左右节点；
+        node->left = reConstructBinaryTree(preLeft,inLeft);
+        node->right = reConstructBinaryTree(preRight,inRight);
+        //返回节点地址；
+        return node;
+    }
+};
