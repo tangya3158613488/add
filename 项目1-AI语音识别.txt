@@ -1,0 +1,87 @@
+Linux语音AI管理工具
+
+一、项目功能：
+1.使用C++实现和智能AI对话 通过语音命令执行
+2.支持配置可执行命令
+二、项目技术点
+	1.C++ STL
+	2.http第三方库
+	3.图灵机器人平台（对我们所发的文本智能响应，处理之后将结果以文本的形式反馈给我们）
+	4.百度语音识别和语音合成（项目核心点）
+	5.Linux系统/网络编程
+	6.各种第三方库和第三方工具的安装与使用
+	
+
+C++ SDK（Software Development Kit，软件开发工具包）：已经写好的开发包，我们可以直接调用。查一下HTTPS？
+三、项目利用的平台：
+	图灵机器人
+	json是以花括号括起来的一组key value值，是一个字符串，里面可以嵌套多个key value字符串。
+	请求的json作为HTTP POST请求的正文部分，即参数部分传递给服务器端，即传递到url接口地址，然后在服务器中对信息进行反序列化
+   （构建json串，经过HTTP中的POST方法发送到服务器上，然后我们就能得到对应的响应，得到响应后再将json串反序列化 ）
+	本项目中json的主要作用是通过http的post方法发起请求，并且使用json进行数据序列化和反序列化。而json进行数据序列化和反序列化
+	的功能需要我们利用开源的C++库：jsoncpp
+	json安装在 /usr/local/include目录下
+	libcurl安装在 /usr/local/lib目录下
+	jsoncpp安装在 /usr/local/lib64目录下
+	百度语音识别和语音合成
+四、代码大致框架
+Voiceassistant.hpp
+	1.编写一个图灵机器人Robot类
+		机器人主要的功能是与人交流说话 string Talk(string message);
+		Talk分三步进行：
+			1.将message转成json格式 string json=MessageToJson(message)
+			2.用post方法请求图灵机器人 string response=RequestTL(json)，里面的post方法直接用百度的aip::HttpClient
+			3.将我们想要的信息拿回来 string echo_message=JsonToEchoMessage(response)
+			
+	2.语音合成和识别类SpeechRec
+		语音识别ASR：将语音转文本
+		语音合成TTS：将文本转语音
+		项目面试问题及延伸：识别主要的接口是recognize(),合成主要的接口是text2audio()。再往底层：百度提供了对应userInfo的api,通过创建百度语音识别相关的一些功能，
+		填充好各种对应的id，最后通过post方法向对应的URL发起请求。post请求的细节？http里面有什么特点？你觉得百度的语音合成在后台是怎么实现的？；
+		语音识别还是以汉字为主，如果我们能把中国所有的汉字以标准的男生或女生的声音录一下音，建立文本和语音的映射关系。然后当我们上传文本之后，
+		我们再将文本中的文字一个个的和后台的语音对应起来，进而组合起来，就实现了语音合成。因为百度能够拿到语音大数据，所以他能够把那些最常问的
+		语音，直接以词语甚至语句的形式完整的录进去，这样回答的语句就更自然。
+	
+	3.语音助手类Voiceassistant
+		语音助手开始运行Run():
+			录音成功进行语音识别Record()
+					1.判断是否是命令IsCommand(message,cmd);
+					2.将消息交给图灵机器人处理Robot rt.Talk();
+		
+	4.封装一个工具类Util，完成字符串处理动作
+		FILE *popen(const char *command,const char *type);功能：能够执行任何shell命令，并让命令的结果以文件的形式读取，
+		或者是这条命令在运行期间有任何输入的时候，让这条命令以文件的形式写入
+
+	popen的实现过程：1.首先进行命令解析，2.解析完成之后popen函数会调用fork(),3.父进程wait，子进程调用exec系列的函数，并且它会把输入输出的信息写到管道里面
+	管道也是文件，用户可以从管道读取信息。
+	分析命令行：把命令行拆分成一个一个的字符串，填充到argv[]中，然后直接交给exec系列的函数进行处理。
+
+	
+	
+创建一个test文件测试json，test.cc
+Makefile
+		test:test.cc
+			g++ -o test test.cc -ljsoncpp -std=c++11
+		.PHONY:clean
+		clean:
+			rm -f test		
+新命令：
+gedit test.cc以记事本方式打开test.cc文件
+ctags -R 在当前目录下形成一个tags索引文件
+ls /dev/null是一个字符文件 /dev/null相当于一个冗余信息的垃圾桶
+
+
+在以.hpp结尾的头文件中最好不用using namespace std,以缩小域，.cc的源文件中建议加上。
+
+扩展：
+	将项目移植到windows中，语音控制Windows上的各个软件。
+	移植到手机端，找一个js页面，在服务器上部署服务，使用手机远程控制服务器。
+	看看百度的其他的语音或文本功能
+
+本项目的缺点：没有语音自动唤醒功能。在手机PC端有（例如百度地图上唤醒机器人）
+
+面试问题
+ 你为什么要做这个项目？做这个项目你遇到的最难的问题是什么，如何解决的，你的项目的难点在哪里，和其他项目有什么区别？
+	现在语音聊天功能非常流行，像百度地图、高德地图上都有语音小助手可以为我们提供服务，我们不用输文字就能直接与机器聊天，
+	这给我们的生活也带来了极大的方便，基于现在语音识别聊天技术的发展盛行，我就想试试做一个和接入图灵机器人并用百度语音识别提供的的语音聊天的程序。
+	这个项目
