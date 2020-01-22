@@ -1,0 +1,58 @@
+题目描述：
+
+示例 1:
+
+输入: [3, 2, 1]
+
+输出: 1
+
+解释: 第三大的数是 1.
+示例 2:
+
+输入: [1, 2]
+
+输出: 2
+
+解释: 第三大的数不存在, 所以返回最大的数 2 .
+示例 3:
+
+输入: [2, 2, 3, 1]
+
+输出: 1
+
+解释: 注意，要求返回第三大的数，是指第三大且唯一出现的数。
+存在两个值为2的数，它们都排第二。
+
+class Solution {
+public:
+    int thirdMax(vector<int>& nums) {
+        int n = nums.size();
+        long long firstmax = LONG_MIN,secondmax = LONG_MIN,thirdmax = LONG_MIN;
+        for(int i = 0; i < n; i++)
+        {
+           if(nums[i] > firstmax)//nums[i]大于最大的数时，更新最大数
+            {
+                thirdmax = secondmax;
+                secondmax = firstmax;
+                firstmax = nums[i];
+            }
+           else if(nums[i] < firstmax && nums[i] > secondmax)//nums[i]小于最大数且大于第二大数时，更新第二大数
+            {
+                thirdmax = secondmax;
+                secondmax = nums[i];
+            }
+            else if(nums[i] < secondmax && nums[i] > thirdmax)//nums[i]小于第二大数且大于第三大数，更新第三大数
+            {
+                thirdmax = nums[i];
+            }
+         }
+        if(thirdmax != LONG_MIN)
+        {
+            return thirdmax;
+        }
+        else
+        {
+            return firstmax;
+        }       
+    }
+};
