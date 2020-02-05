@@ -1,0 +1,155 @@
+最小栈
+设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
+
+push(x) -- 将元素 x 推入栈中。
+pop() -- 删除栈顶的元素。
+top() -- 获取栈顶元素。
+getMin() -- 检索栈中的最小元素。
+示例:
+
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    MinStack() 
+    {}
+    
+    void push(int x) {
+        _st.push(x);
+        if(_smin.empty() || x <= _smin.top())
+            _smin.push(x);
+    }
+    
+    void pop() {
+        if(_st.top() == _smin.top())
+            _smin.pop();
+        _st.pop();
+    }
+    
+    int top() {
+        return _st.top();
+    }
+    
+    int getMin() {
+        return _smin.top();
+    }
+private:
+    std::stack<int> _st;
+    std::stack<int> _smin;
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
+栈的压入、弹出序列
+题目描述
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否可能为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4,5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+
+class Solution {
+public:
+    bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        stack<int> st;
+        size_t popvi = 0;
+        size_t pushvi = 0;
+        while(popvi < popV.size())
+        {
+            while(st.empty() || st.top() != popV[popvi])
+            {
+                if(pushvi < pushV.size())
+                {
+                    st.push(pushV[pushvi]);
+                    ++pushvi;
+                }
+                else
+                    return false;
+            }
+            st.pop();
+            ++popvi;
+        }
+        return true;
+    }
+};
+逆波兰表达式求值
+根据逆波兰表示法，求表达式的值。
+
+有效的运算符包括 +, -, *, / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。
+
+说明：
+
+整数除法只保留整数部分。
+给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。
+示例 1：
+
+输入: ["2", "1", "+", "3", "*"]
+输出: 9
+解释: ((2 + 1) * 3) = 9
+示例 2：
+
+输入: ["4", "13", "5", "/", "+"]
+输出: 6
+解释: (4 + (13 / 5)) = 6
+示例 3：
+
+输入: ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
+输出: 22
+解释: 
+  ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+= ((10 * (6 / (12 * -11))) + 17) + 5
+= ((10 * (6 / -132)) + 17) + 5
+= ((10 * 0) + 17) + 5
+= (0 + 17) + 5
+= 17 + 5
+= 22
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> s;
+        for(auto& e : tokens)
+        {
+            if(e != "+" && e != "-" && e != "*" && e != "/")
+            {
+                s.push(stoi(e));//stoi将字符串转换成数字
+            }
+            else
+            {
+                int right = s.top();
+                s.pop();
+                int left = s.top();
+                s.pop();
+                if(e == "+")
+                {
+                    s.push(left + right);
+                }
+                 if(e == "-")
+                {
+                    s.push(left - right);
+                }
+                 if(e == "*")
+                {
+                    s.push(left * right);
+                }
+                 if(e == "/")
+                {
+                    s.push(left / right);
+                }
+            }
+        }
+        return s.top();
+    }
+};
+二叉树的前、中、后序遍历见博客：
+
+https://blog.csdn.net/tangya3158613488/article/details/88556401
+
