@@ -103,7 +103,6 @@ public:
 						if (cur == parent->_right)
 						{
 							RotateL(parent);
-							std::swap(cur, parent);
 						}
 						grandfather->_color = RED;
 						parent->_color = BLACK;
@@ -127,7 +126,6 @@ public:
 						if (cur == parent->_left)
 						{
 							RotateR(parent);
-							std::swap(cur, parent);
 						}
 						RotateL(grandfather);
 						grandfather->_color = RED;
@@ -203,6 +201,30 @@ public:
 		_Inorder(_root);
 		cout << endl;
 	}
+	bool IsRBtree()
+	{
+		//空树也是红黑树
+		if (nullptr == _root)
+			return true;
+		//检测根节点是否满足红黑树的性质
+		if (BLACK != _root->_color)
+		{
+			cout << "违反红黑树性质：根节点必须为黑色" << endl;
+			return false;
+		}
+		//获取任意一条路径中黑色结点的个数
+		size_t blackCount = 0;
+		Node* cur = _root;
+		while (cur)
+		{
+			if (BLACK == cur->_color)
+				blackCount++;
+			cur = cur->_left;
+		}
+		size_t k = 0;//k用来记录路径中黑色结点的个数
+		return _IsRBTree(_root, k, blackCount);
+	}
+	
 private:
 	void _Inorder(Node* root)
 	{
@@ -222,17 +244,45 @@ private:
 			root = nullptr;
 		}
 	}
+	bool _IsRBTree(Node* root, size_t k, const size_t blackCount)
+	{
+		if (nullptr == root)
+			return true;
+		//统计黑色结点的个数
+		if (BLACK == root->_color)
+			k++;
+		//检测当前结点与其双亲结点是否都为红色
+		Node* parent = root->_parent;
+		if (parent && RED == parent->_color && RED == root->_color)
+		{
+			cout << "违反红黑树性质：没有连在一起的红色结点" << endl;
+			return false;
+		}
+		//检测当前路径中黑色结点的个数是否与其他路径中的黑色结点相等
+		if (nullptr == root->_left && nullptr == root->_right)
+		{
+			if (k != blackCount)
+			{
+				cout << "违反红黑树性质：每条路径中黑色结点的个数必须相等" << endl;
+				return false;
+			}
+		}
+		return _IsRBTree(root->_left, k, blackCount) && _IsRBTree(root->_right, k, blackCount);
+	}
 private:
 	Node* _root;
 };
 void TestRBTree()
 {
 	RBTree<int> rt1;
-	rt1.Insert(2);
-	rt1.Insert(8);
+	rt1.Insert(16);
+	rt1.Insert(3);
+	rt1.Insert(7);
 	rt1.Insert(11);
-	rt1.Insert(13);
-	rt1.Insert(17);
-	rt1.Insert(15);
+	rt1.Insert(9);
+	rt1.Insert(26);
+	rt1.Insert(18);
+	rt1.Insert(14);
 	rt1.Inorder();
+	rt1.IsRBtree();
 }
