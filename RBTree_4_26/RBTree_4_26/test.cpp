@@ -1,7 +1,8 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-#include"RBTree.h"
+#include"Mymap.h"
+
 int main()
 {
-	TestRBTree();
+	//TestRBTree();
+	TestMyMap();
 	return 0;
 }
