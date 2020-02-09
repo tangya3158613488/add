@@ -1,8 +1,9 @@
-#include"Mymap.h"
-
+//#include"MySet.h"
+#include"RBTree.h"
 int main()
 {
-	//TestRBTree();
-	TestMyMap();
+	TestRBTree();
+	//TestMyMap();
+	//TestMySet();
 	return 0;
 }

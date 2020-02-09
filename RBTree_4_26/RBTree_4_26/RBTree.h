@@ -130,7 +130,7 @@ public:
 						if (cur == parent->_left)
 						{
 							RotateR(parent);
-							swap(cur,parent);
+							swap(parent,cur);
 						}
 						RotateL(grandfather);
 						grandfather->_color = RED;
@@ -206,10 +206,6 @@ public:
 		_Inorder(_root);
 		cout << endl;
 	}
-	bool IsRBtree()
-	{
-		if (nullptr == )
-	}
 private:
 	void Destroy(Node* root)
 	{
@@ -232,11 +228,11 @@ private:
 };
 void TestRBTree()
 {
-	RBTree<int, int> t;
+	RBTree<int,int> t;
 	t.Insert(make_pair(1,1));
 	t.Insert(make_pair(3,3));
-	/*t.Insert(make_pair(2,2));
-	t.Insert(make_pair(5,5));*/
+	t.Insert(make_pair(2,2));
+	t.Insert(make_pair(5,5));
 
 	t.Inorder();
 }

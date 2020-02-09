@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mymap.h" />
+    <ClInclude Include="MySet.h" />
     <ClInclude Include="RBTree.h" />
     <ClInclude Include="RBTree2.h" />
   </ItemGroup>
