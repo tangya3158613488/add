@@ -103,6 +103,7 @@ public:
 						if (cur == parent->_right)
 						{
 							RotateL(parent);
+							std::swap(cur, parent);
 						}
 						grandfather->_color = RED;
 						parent->_color = BLACK;
@@ -126,6 +127,7 @@ public:
 						if (cur == parent->_left)
 						{
 							RotateR(parent);
+							std::swap(parent, cur);
 						}
 						RotateL(grandfather);
 						grandfather->_color = RED;
@@ -283,6 +285,8 @@ void TestRBTree()
 	rt1.Insert(26);
 	rt1.Insert(18);
 	rt1.Insert(14);
+	rt1.Insert(30);
+	rt1.Insert(20);
 	rt1.Inorder();
 	rt1.IsRBtree();
 }
