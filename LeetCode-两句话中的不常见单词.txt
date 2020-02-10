@@ -1,0 +1,45 @@
+题目描述：
+
+给定两个句子 A 和 B 。 （句子是一串由空格分隔的单词。每个单词仅由小写字母组成。）
+
+如果一个单词在其中一个句子中只出现一次，在另一个句子中却没有出现，那么这个单词就是不常见的。
+
+返回所有不常用单词的列表。
+
+您可以按任何顺序返回列表。
+
+示例 1：输入：A = "this apple is sweet", B = "this apple is sour"
+输出：["sweet","sour"]
+示例 2：输入：A = "apple apple", B = "banana"
+输出：["banana"]
+提示：
+
+0 <= A.length <= 200     
+
+0 <= B.length <= 200
+A 和 B 都只包含空格和小写字母。
+
+class Solution {
+public:
+    vector<string> uncommonFromSentences(string A, string B) {
+        unordered_map<string,int> m;
+        vector<string> ret;
+        string str = A + " " + B;//将A、B两个字符串拼接，注意A、B之间用空格字符串相连
+        int start = 0,last = 0;
+        do
+        {
+            //分离每个单词，每分离一个单词保存在m中
+            string s;
+            last = str.find(' ',start);
+            s = str.substr(start,last - start);
+            m[s]++;
+            start = last + 1;
+        }while(last != -1);
+        for(auto& e : m)//遍历m,将单词次数出现为1的单词插入到ret中
+        {
+            if(1 == e.second)
+                ret.push_back(e.first);
+        }
+        return ret;
+    }
+};
