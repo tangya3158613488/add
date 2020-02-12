@@ -15,7 +15,12 @@ struct HashNode
 		, _value(v)
 	{}
 };
+//K：关键码类型。
+//V：不同容器的V的类型不同，如果是unoredered_map，V代表一个键值对，如果是unordered_set，V为K
+//KeyOfValue：因为V的类型不同，通过value取key的方式也就不同。
+//HashFunc：哈希函数仿函数对象类型，哈希函数使用除留余数法，需要将key转换成整形数字才能取模。
 
+//为了实现简单，在哈希表的迭代器类中需要用到HashTable本身，所以采用前置声明
 template<class K,class V,class KeyOfValue,class HashFunc>
 class HashTable;
 
@@ -31,7 +36,7 @@ struct HTIterator
 		: _node(node)
 		, _ht(ht)
 	{}
-
+	//因为哈希表在底层是单链表结构，所以哈希表的迭代器不需要实现--操作
 	Self& operator++()
 	{
 		if (_node->_next)
