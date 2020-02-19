@@ -42,7 +42,7 @@ void InsertSort(int* a, int n)
 			a[end + 1] = tmp;
 		}
 	}
-	//PrintArray(a, n);
+	PrintArray(a, n);
 }
 //Ï£¶ûÅÅÐò
 void ShellSort(int* a, int n)
@@ -469,15 +469,15 @@ void TestSort()
 	int n = sizeof(a) / sizeof(a[0]);
 	int begin = 0;
 	int end = n - 1;
-	/*InsertSort(a, n);
-	ShellSort(a, n);
+	InsertSort(a, n);
+	/*ShellSort(a, n);
 	SelectSort(a, n);
 	HeapSort(a, n);
 	BubbleSort(a, n);
 	QuickSort(a, 0, n - 1);
 	QuickSortNonR(a, 0, n - 1);*/
 	//MergeSort(a, n);
-	CountSort(a, n);
-	PrintArray(a, n);
+	//CountSort(a, n);
+	//PrintArray(a, n);
 }
 
