@@ -21,6 +21,18 @@
     <ClInclude Include="SelectSort.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HeapSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickSort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

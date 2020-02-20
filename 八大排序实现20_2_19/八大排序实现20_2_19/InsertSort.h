@@ -1,16 +1,4 @@
-#pragma once;
-#include<iostream>
-
-using namespace std;
-
-void Print(int* a,int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		cout << a[i] << " ";
-	}
-	cout << endl;
-}
+#include"common.h"
 //Ö±½Ó²åÈëÅÅÐòËã·¨
 void InsertSort(int* a, int n)
 {
@@ -32,6 +20,7 @@ void InsertSort(int* a, int n)
 			}
 		}
 	}
+	Print(a, n);
 }
 //Ï£¶ûÅÅÐò
 void ShellSort(int* a, int n)
@@ -67,6 +56,7 @@ void ShellSort(int* a, int n)
 			}
 		}
 	}*/
+	Print(a, n);
 }
 void TestInsertSort()
 {
@@ -74,5 +64,5 @@ void TestInsertSort()
 	int n = sizeof(a) / sizeof(a[0]);
 	//InsertSort(a, n);
 	ShellSort(a, n);
-	Print(a, n);
+	
 }
