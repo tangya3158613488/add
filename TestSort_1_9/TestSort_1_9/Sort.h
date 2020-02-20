@@ -99,9 +99,9 @@ void SelectSort(int* a, int n)
 		{
 			Swap(&a[begin], &a[min]);
 		}
-		if (a[begin] == a[max])
+		if (max == begin)
 		{
-			max = begin;
+			max = min;//如果首元素是最大的，则需要把max = min,此处的min对应的a[min]为最大值，在后面即在执行下一步Swap(&a[end], &a[max])相当于自己和自己交换即不改变相应位置的值。
 		}
 		Swap(&a[end], &a[max]);
 		++begin;
