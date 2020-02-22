@@ -1,27 +1,6 @@
 #include"common.h"
 //÷±Ω”≤Â»Î≈≈–ÚÀ„∑®
-void InsertSort(int* a, int n)
-{
-	for (int i = 0; i < n - 1; i++)
-	{
-		int cur = i;
-		int temp = a[cur + 1];
-		while (cur >= 0)
-		{
-			if (a[cur] > temp)
-			{
-				a[cur + 1] = a[cur];
-				a[cur] = temp;
-				--cur;
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
-	Print(a, n);
-}
+
 //œ£∂˚≈≈–Ú
 void ShellSort(int* a, int n)
 {

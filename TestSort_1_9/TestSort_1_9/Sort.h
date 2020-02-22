@@ -240,7 +240,7 @@ int PartSort3(int* a, int begin, int end)//前后指针版本
 		}
 		++cur;
 	}
-	Swap(&key, &a[prev]);
+	Swap(&a[begin], &a[prev]);
 	return prev;
 }
 int PartSort2(int* a, int begin, int end)//挖坑法
