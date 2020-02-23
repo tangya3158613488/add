@@ -1,0 +1,46 @@
+给定一个double类型的浮点数base和int类型的整数exponent。求base的exponent次方。
+
+保证base和exponent不同时为0
+class Solution {
+public:
+    bool InvalidInput = false;
+    double Power(double base,int exponent)
+    {
+        InvalidInput = false;
+        if(equal(base,0.0) && exponent < 0)
+        {
+            InvalidInput = true;
+            return 0.0;
+        }
+        unsigned int absExponent = (unsigned int)(exponent);
+        if(exponent < 0)
+        {
+            absExponent = (unsigned int)(-exponent);
+        }
+        double result = PowerWithUnsignedException(base,absExponent);
+        if(exponent < 0)
+        {
+            result = 1.0 / result;
+        }
+        return result;
+    }
+    bool equal(double num1,double num2)
+    {
+        if((num1 - num2) > -0.0000001 && (num1 - num2 <0.0000001))
+            return true;
+        else
+            return false;
+    }
+    double PowerWithUnsignedException(double base, int exponent)
+    {
+        if(0 == exponent)
+            return 1;
+        if(1 == exponent)
+            return base;
+        double result = Power(base,exponent >> 1);
+        result *= result;
+        if(exponent & 0x1 == 1)
+            result *= base;
+        return result;
+    }
+};
