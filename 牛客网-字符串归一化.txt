@@ -1,0 +1,53 @@
+题目描述
+
+通过键盘输入一串小写字母(a~z)组成的字符串。
+请编写一个字符串归一化程序，统计字符串中相同字符出现的次数，并按字典序输出字符及其出现次数。
+例如字符串"babcc"归一化后为"a1b2c2"
+思路一：
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+int main()
+{
+    string s;
+    cin >> s;
+    sort(s.begin(), s.end());
+	size_t i = 0;
+	while (i < s.size())
+	{
+		int count = 1;
+		cout << s[i];
+		while (s[i] == s[i + 1])
+		{
+			++i;
+			++count;
+		}
+		cout << count;
+		++i;
+	}
+	cout << endl;
+	return 0;
+}
+思路二：
+
+#include<iostream>
+#include<string>
+using namespace std;
+int main(){
+    int count[26] = {0};   //记录每个字母的个数
+    string s;
+    cin >> s;
+    for(int i = 0; i < s.length(); i++){
+        count[s[i]-'a']++;
+    }
+    char c = 'a';
+    for(int i = 0; i < 26; i++){
+        if(count[i]){
+            cout << c << count[i];
+        }
+        c++;
+    }
+    cout << endl;
+    return 0;
+}
