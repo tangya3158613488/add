@@ -1,0 +1,78 @@
+题目描述
+输入两个链表，找出它们的第一个公共结点。（注意因为传入数据是链表，所以错误测试数据的提示是用其他方式显示的，保证传入数据是正确的）
+思路一；
+暴力法：在第一个链表上顺序遍历每个结点，每遍历一个结点的时候，在第二个链表上顺序遍历每个结点。如果在第二个链表上有一个结点和第一个链表上的结点一样，
+说明两个链表在这个结点上重合，于是就找到了它们的公共结点。、
+时间复杂度：如果第一个链表的长度为m，第二个结点的长度为n,时间复杂度为O(mn)。
+class Solution {
+public:
+    ListNode* FindFirstCommonNode( ListNode* pHead1, ListNode* pHead2) {
+        if(pHead1 == nullptr || pHead2 == nullptr)
+            return nullptr;
+        ListNode* cur1 = pHead1;
+        ListNode* cur2 = pHead2;
+        while(cur1)
+        {
+            cur2 = pHead2;
+            while(cur2)
+            {
+                if(cur1->val == cur2->val)
+                    return cur1;
+                cur2 = cur2->next;
+            }
+            cur1 = cur1->next;
+        }
+        return nullptr;
+    }
+};
+思路二：
+先依次遍历一遍两个链表，得到它们的长度，从而得到两个链表长度的差值。然后让长的那个链表先走，走gap步，然后两个链表一起走。
+当两个链表的结点相同时，就找到了它们第一个公共结点。
+时间复杂度：O(m+n)
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindFirstCommonNode( ListNode* pHead1, ListNode* pHead2) {
+        unsigned int length1 = GetListLength(pHead1);
+        unsigned int length2 = GetListLength(pHead2);
+        int gap = length1 - length2;
+        ListNode* pListHeadLong = pHead1;
+        ListNode* pListHeadShort = pHead2;
+        if(length2 > length1)
+        {
+            pListHeadLong = pHead2;
+            pListHeadShort = pHead1;
+            gap = length2 - length1;
+        }
+        for(int i = 0; i < gap;i++)
+        {
+            pListHeadLong = pListHeadLong->next;
+        }
+        while((pListHeadLong != nullptr) && (pListHeadShort != nullptr) && (pListHeadLong != pListHeadShort))
+        {
+            pListHeadLong = pListHeadLong->next;
+            pListHeadShort = pListHeadShort->next;
+        }
+        //得到第一个公共结点
+        ListNode* pFisrtCommomNode = pListHeadLong;
+        return pFisrtCommomNode;
+    }
+    unsigned int GetListLength(ListNode* pHead)
+    {
+        unsigned int length = 0;
+        ListNode* cur = pHead;
+        while(cur)
+        {
+            ++length;
+            cur = cur->next;
+        }
+        return length;
+    }
+};
