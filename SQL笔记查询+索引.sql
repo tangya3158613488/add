@@ -83,7 +83,7 @@ SHOW INDEX FROM 表名;
 -- 调优查询语句时用的，重要！！！	重点看 rows 列
 EXPLIAN SELECT * FROM 表 WHERE name = 'A';
 
--- 如何调优查询【扩展了解】
+-- 如何调优查询
 -- 1. 通过 EXPLAIN 看有没有命中索引
 -- 2. 如果没有命中，修改到命中索引
 	
