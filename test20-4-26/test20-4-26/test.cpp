@@ -43,9 +43,10 @@ int main()
 			}
 			else if (str == "SIZE")
 				ret.push_back(q.size());
-			else if (str == "CLEAR" && !q.empty())
+			else if (str == "CLEAR")
 			{
-				q.pop();
+				while (!q.empty())
+					q.pop();
 			}
 		}
 		for (int i = 0; i < ret.size(); i++)
