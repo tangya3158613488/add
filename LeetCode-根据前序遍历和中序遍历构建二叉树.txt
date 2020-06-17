@@ -1,0 +1,53 @@
+输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+ 
+
+例如，给出
+
+前序遍历 preorder = [3,9,20,15,7]
+中序遍历 inorder = [9,3,15,20,7]
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* _buildTree(vector<int>& preorder,vector<int>& inorder,int& prei,int inbegin,int inend)
+    {
+        
+        if(inbegin > inend)
+            return NULL;
+        //前序遍历的下标相当于是构建二叉树时每个根的下标
+        TreeNode* root = new TreeNode(preorder[prei]);
+        int rooti = inbegin;
+        //在中序遍历序列中找出和前序遍历序列此时下标对应结点值相等的结点下标
+        while(rooti != inend)
+        {
+            if(preorder[prei] == inorder[rooti])
+                break;
+            else
+                ++rooti;
+        }
+        //[inbegin,rooti-1] rooti [rooti+1,inend]
+        if(inbegin <= rooti-1)
+            root->left = _buildTree(preorder,inorder,++prei,inbegin,rooti-1);//左区间至少有一个结点，递归创建左子树
+        else
+            root->left = NULL;//左区间没有结点，即该此时的root没有左子树
+        if(rooti+1 <= inend)
+            root->right = _buildTree(preorder,inorder,++prei,rooti+1,inend);右区间至少有一个结点，递归创建右子树
+        else
+            root->right = NULL;//右区间没有结点，即此时的root没有右子树
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int prei = 0;//前序遍历的下标，从0开始
+        int inbegin = 0,inend = inorder.size() - 1;//中序遍历的第一个元素的下标和最后一个元素的下标
+        return _buildTree(preorder,inorder,prei,inbegin,inend);
+    }
+};
