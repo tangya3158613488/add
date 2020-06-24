@@ -2,6 +2,7 @@
 #include<iostream>
 #include<string>
 #include<assert.h>
+#include<algorithm>
 using namespace std;
 namespace TY
 {
@@ -65,7 +66,7 @@ namespace TY
 				PushBack(value);
 			}
 		}
-		//赋值重载hansh
+		//赋值重载函数
 		Vector<T>& operator=(const Vector<T>& v)
 		{
 			this->Swap(v);
@@ -77,6 +78,7 @@ namespace TY
 			delete[] _start;
 			_start = _finish = _endofstorage = nullptr;
 		}
+		//迭代器构造
 		template<class Inputiterator>
 		Vector(Inputiterator first, Inputiterator last)
 		{
@@ -272,8 +274,96 @@ void TestVector2()
 	cout << endl;
 	
 }
+
+void TestVector3()
+{
+	TY::Vector<int> first;
+	TY::Vector<int> second(4, 100);
+	TY::Vector<int> third(second.Begin(), second.End());
+	TY::Vector<int> fourth(third);
+
+	int myints[] = { 2, 5, 1, 18 };
+	TY::Vector<int> fifth(myints, myints + sizeof(myints) / sizeof(int));
+	cout << "The content of fifth are: ";
+	for (TY::Vector<int>::iterator it = fifth.Begin(); it != fifth.End(); it++)
+	{
+		cout << ' ' << *it;
+	}
+	cout << endl;
+}
+void TestVector4()
+{
+	TY::Vector<int> foo;
+	size_t sz = foo.Capacity();
+	cout << "making foo grow:\n";
+	for (int i = 0; i < 100; i++)
+	{
+		foo.PushBack(i);
+		if (sz != foo.Capacity())
+		{
+			sz = foo.Capacity();
+			cout << "Capacity changed: " << sz << endl;
+		}
+	}
+	TY::Vector<int> bar;
+	sz = bar.Capacity();
+	bar.Reserve(100);
+	cout << "making bar grow:\n";
+	for (int i = 0; i < 100; i++)
+	{
+		bar.PushBack(i);
+		if (sz != bar.Capacity())
+		{
+			sz = bar.Capacity();
+			cout << "Capacity changed: " << sz << endl;
+		}
+	}
+	TY::Vector<int> myvector;
+	for (int i = 1; i < 10; i++)
+	{
+		myvector.PushBack(i);
+	}
+	myvector.Resize(5);
+	myvector.Resize(8, 10);
+	myvector.Resize(10);
+	cout << "myvector contains: ";
+	for (int i = 0; i < myvector.Size(); i++)
+	{
+		cout << ' ' << myvector[i];
+	}
+	cout << endl;
+	cout << "myvector's capacity is " << myvector.Capacity() << endl;
+}
+void TestVector5()
+{
+	int a[] = { 1, 2, 3, 4 };
+	TY::Vector<int> v(a, a + sizeof(a) / sizeof(int));
+	TY::Vector<int>::iterator pos = find(v.Begin(), v.End(), 3);
+	//在pos位置之前插入30
+	v.Insert(pos, 30);
+	TY::Vector<int>::iterator it = v.Begin();
+	while (it != v.End())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+	pos = find(v.Begin(), v.End(), 3);
+	//删除pos位置的值
+	v.Erase(pos);
+	it = v.Begin();
+	while (it != v.End())
+	{
+		cout << *it << " ";
+		++it;
+	}
+	cout << endl;
+}
 int main()
 {
-	TestVector2();
+	//TestVector2();
+	//TestVector3();
+	//TestVector4();
+	TestVector5();
 	return 0;
 }
