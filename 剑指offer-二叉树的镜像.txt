@@ -25,6 +25,7 @@ struct TreeNode {
 };*/
 class Solution {
 public:
+	//递归
     void Mirror(TreeNode *pRoot) {
         if(pRoot == nullptr)
             return;
@@ -37,6 +38,35 @@ public:
             Mirror(pRoot->left);
         if(pRoot->right)
             Mirror(pRoot->right);
+    }
+
+	void Mirror(TreeNode *pRoot) {
+        if (pRoot == NULL)return;
+        stack<TreeNode*> st;
+        TreeNode* p = NULL;
+        st.push(pRoot);
+        while (st.size())
+        {
+            p = st.top();
+            st.pop();
+            swap(p->left, p->right);
+            if (p->left)st.push(p->left);
+            if (p->right)st.push(p->right);
+        }
+     }  //队列的非递归
+    void Mirror(TreeNode *pRoot) {
+        if (pRoot == NULL)return;
+        queue<TreeNode*> qu;
+        TreeNode* p = NULL;
+        qu.push(pRoot);
+        while (qu.size())
+        {
+            p = qu.front();
+            qu.pop();
+            swap(p->left, p->right);
+            if (p->left)qu.push(p->left);
+            if (p->right)qu.push(p->right);
+        }
     }
 };		
 		
