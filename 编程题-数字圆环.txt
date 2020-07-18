@@ -1,0 +1,63 @@
+
+小易有一个长度为n的数字数组a1,a2,…,an
+问你是否能用这n个数字构成一个环(首尾连接)，使得环中的每一个数字都小于它相邻的两个数字的和(每个数字都必须使用并且每个数字只能使用一次)。
+输入描述:
+第一行包含一个整数t(1<=t<=10)，表示测试用例的组数。
+每个测试用例输入如下：
+第一行一个整数n，表示数字的个数；
+第二行n个整数a1,a2, …,an，每两个整数之间用一个空格分隔。
+输入数据保证3<=n<=10^5 1<=a_i<=10^9
+输出描述:
+输出应该包含t行，对于每组用例，若能输出"YES"，否则输出"NO"。
+示例1
+输入
+1
+5
+17 6 17 11 17
+输出
+YES
+示例2
+输入
+1
+3
+1 2 4
+输出
+NO
+#include<iostream>
+#include<vector>
+using namespace std;
+ 
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        long long n;
+        cin >> n;
+        long long data;
+        vector<long long> v;
+        for(long long i = 0; i < n; i++)
+        {
+            cin >> data;
+            v.push_back(data);
+        }
+        long long max = v[0];//最大值
+        long long ccmax = 0;//次大值
+        long long cmax = 0;//次次大值
+        for(long long i = 1;i < n;i++)
+        {
+            if(v[i] >= max)
+            {
+                //更新最大值、次大值、次次大值
+                ccmax = cmax;
+                cmax = max;
+                max = v[i];
+            }
+        }
+        if(ccmax + cmax > max)
+            cout << "YES" << endl;
+        else
+            cout << "NO" << endl;
+    }
+}
