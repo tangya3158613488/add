@@ -39,7 +39,7 @@ void HeapSort(int* a,int n)
 }
 void TestHeapSort()
 {
-	int a[] = { 20, 17, 4, 16, 5, 3 };
+	int a[] = { 8, 1, 14, 3, 21, 5, 7, 10 };
 	int n = sizeof(a) / sizeof(a[0]);
 	HeapSort(a, n);
 }

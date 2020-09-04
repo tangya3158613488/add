@@ -11,10 +11,10 @@ int main()
 {
 	//TestInsertSort();
 	//TestSelectSort();
-	//TestHeapSort();
+	TestHeapSort();
 	//TestBubbleSort();
 	//TestQuickSort();
 	//TestMergeSort();
-	TestCountSort();
+	//TestCountSort();
 	return 0;
 }
