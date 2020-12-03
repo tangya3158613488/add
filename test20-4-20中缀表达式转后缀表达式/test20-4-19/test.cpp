@@ -1,4 +1,4 @@
-/*#include<iostream>
+#include<iostream>
 #include<stack>
 #include<string>
 #include<vector>
@@ -108,4 +108,4 @@ int main()
 	int ret = postcal(postfix);
 	cout << "后缀表达式的计算结果：" << ret << endl;
 	return 0;
-}*/
+}
